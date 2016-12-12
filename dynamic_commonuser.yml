@@ -1,0 +1,7 @@
+---
+- name: creating a common user with SSH privilege using Keypair
+  hosts: tag_Environment_ec2test
+  remote_user: ec2-user
+  sudo: True
+  roles:
+   - common_user

@@ -1,0 +1,20 @@
+---
+- name: create the new reanro user
+  user: name=reanro comment="CommonUser"
+
+- name: change owner of .ssh directory
+  file: path=/home/reanro/.ssh state=directory owner=reanro group=reanro mode=0700
+
+- name: create authorized_keys file
+  file: path=/home/reanro/.ssh/authorized_keys state=touch owner=reanro group=reanro mode=0600
+
+- name: copy the public key into the instance
+  copy: src=reanro-generic-pub dest=/home/reanro/.ssh/authorized_keys
+
+- name: Provide the privileges to the user
+  blockinfile:
+    dest: /etc/sudoers
+    insertbefore: ## Allows members of the 'sys' group
+    content: |
+       reanro  ALL=(ALL)      NOPASSWD:ALL
+    backup: yes
